@@ -19,21 +19,21 @@
   ],
 
   "Groups": [
-    { "Name": "All Staff",              "Description": "All employees and contractors" },
-    { "Name": "IT Admins",              "Description": "Privileged IT administrators" },
-    { "Name": "Helpdesk Tier 1",        "Description": "Helpdesk support (Tier 1)" },
-    { "Name": "SecOps",                 "Description": "Security operations team (SOC/Blue team)" },
-    { "Name": "HR Staff",               "Description": "Human Resources users" },
-    { "Name": "Finance Staff",          "Description": "Finance department users" },
-    { "Name": "Sales Staff",            "Description": "Sales department users" },
-    { "Name": "All Contractors",        "Description": "All contractor accounts" },
-    { "Name": "Remote Access Users",    "Description": "VPN and remote access users" },
-    { "Name": "Local Admin - Workstations", "Description": "Local admin rights on workstations" },
-    { "Name": "Local Admin - Servers",  "Description": "Local admin rights on member servers" },
-    { "Name": "Service - SQL",          "Description": "SQL service account group" },
-    { "Name": "Service - Backup",       "Description": "Backup service account group" },
-    { "Name": "Service - Web",          "Description": "Web service account group" },
-    { "Name": "Service - Monitoring",   "Description": "Monitoring service account group" }
+    { "Name": "All Staff",                   "Description": "All employees and contractors" },
+    { "Name": "IT Admins",                   "Description": "Privileged IT administrators" },
+    { "Name": "Helpdesk Tier 1",             "Description": "Helpdesk support (Tier 1)" },
+    { "Name": "SecOps",                      "Description": "Security operations team (SOC/Blue team)" },
+    { "Name": "HR Staff",                    "Description": "Human Resources users" },
+    { "Name": "Finance Staff",               "Description": "Finance department users" },
+    { "Name": "Sales Staff",                 "Description": "Sales department users" },
+    { "Name": "All Contractors",             "Description": "All contractor accounts" },
+    { "Name": "Remote Access Users",         "Description": "VPN and remote access users" },
+    { "Name": "Local Admin - Workstations",  "Description": "Local admin rights on workstations" },
+    { "Name": "Local Admin - Servers",       "Description": "Local admin rights on member servers" },
+    { "Name": "Service - SQL",               "Description": "SQL service account group" },
+    { "Name": "Service - Backup",            "Description": "Backup service account group" },
+    { "Name": "Service - Web",               "Description": "Web service account group" },
+    { "Name": "Service - Monitoring",        "Description": "Monitoring service account group" }
   ],
 
   "Profiles": {
@@ -133,5 +133,16 @@
         "DC_WeakenSysvolACL"
       ]
     }
+  },
+
+  "FakeEndpoints": {
+    "Enabled": true,
+    "GeneratePerUser": true,
+    "ExtraWorkstations": 50,
+    "ExtraServers": 10,
+    "WorkstationPrefix": "WKSTN",
+    "ServerPrefix": "SRV",
+    "StartNumber": 1,
+    "PadLength": 4
   }
 }
