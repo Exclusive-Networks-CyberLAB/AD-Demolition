@@ -1,0 +1,53 @@
+SamAccountName,GivenName,Surname,DisplayName,OuPath,BaselineGroups,IsServiceAccount
+# Core IT personas
+itadmin1,Alex,Admin,Alex Admin,Corp/Users/IT,"IT Admins;All Staff",False
+helpdesk1,Sam,Helpdesk,Sam Helpdesk,Corp/Users/IT,"Helpdesk Tier 1;All Staff",False
+helpdesk2,Jamie,Helpdesk,Jamie Helpdesk,Corp/Users/IT,"Helpdesk Tier 1;All Staff",False
+secops1,Casey,Secops,Casey SecOps,Corp/Users/IT,"SecOps;All Staff",False
+secops2,Riley,Secops,Riley SecOps,Corp/Users/IT,"SecOps;All Staff",False
+
+# HR
+hruser1,Hannah,HR,Hannah HR,Corp/Users/HR,"HR Staff;All Staff",False
+hruser2,Liam,HR,Liam HR,Corp/Users/HR,"HR Staff;All Staff",False
+hruser3,Sophia,HR,Sophia HR,Corp/Users/HR,"HR Staff;All Staff",False
+
+# Finance
+finuser1,Frank,Finance,Frank Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
+finuser2,Amelia,Finance,Amelia Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
+finuser3,Noah,Finance,Noah Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
+
+# Sales
+salesuser01,Ella,Sales,Ella Sales,Corp/Users/Sales,"All Staff",False
+salesuser02,Jack,Sales,Jack Sales,Corp/Users/Sales,"All Staff",False
+salesuser03,Olivia,Sales,Olivia Sales,Corp/Users/Sales,"All Staff",False
+salesuser04,Henry,Sales,Henry Sales,Corp/Users/Sales,"All Staff",False
+salesuser05,Grace,Sales,Grace Sales,Corp/Users/Sales,"All Staff",False
+salesuser06,Leo,Sales,Leo Sales,Corp/Users/Sales,"All Staff",False
+salesuser07,Isla,Sales,Isla Sales,Corp/Users/Sales,"All Staff",False
+salesuser08,Max,Sales,Max Sales,Corp/Users/Sales,"All Staff",False
+salesuser09,Chloe,Sales,Chloe Sales,Corp/Users/Sales,"All Staff",False
+salesuser10,Luke,Sales,Luke Sales,Corp/Users/Sales,"All Staff",False
+
+# Interns
+intern01,Ivy,Intern,Ivy Intern,Corp/Users/Interns,"All Staff",False
+intern02,Tom,Intern,Tom Intern,Corp/Users/Interns,"All Staff",False
+intern03,Mia,Intern,Mia Intern,Corp/Users/Interns,"All Staff",False
+intern04,Ruby,Intern,Ruby Intern,Corp/Users/Interns,"All Staff",False
+intern05,Ben,Intern,Ben Intern,Corp/Users/Interns,"All Staff",False
+
+# Contractors
+contractor01,Aaron,Contractor,Aaron Contractor,Corp/Users/Contractors,"All Contractors",False
+contractor02,Emma,Contractor,Emma Contractor,Corp/Users/Contractors,"All Contractors",False
+contractor03,Daniel,Contractor,Daniel Contractor,Corp/Users/Contractors,"All Contractors",False
+contractor04,Sarah,Contractor,Sarah Contractor,Corp/Users/Contractors,"All Contractors",False
+contractor05,Oliver,Contractor,Oliver Contractor,Corp/Users/Contractors,"All Contractors",False
+
+# Service accounts
+svc_sql,SQL,Service,SQL Service Account,Corp/ServiceAccounts,"Service - SQL",True
+svc_backup,Backup,Service,Backup Service Account,Corp/ServiceAccounts,"Service - Backup",True
+svc_web,Web,Service,Web App Service Account,Corp/ServiceAccounts,"Service - Web",True
+svc_monitor,Monitor,Service,Monitoring Service Account,Corp/ServiceAccounts,"Service - Monitoring",True
+
+# Legacy / stale admin
+oldadmin,Olivia,Oldadmin,Olivia Old Admin,Legacy,"IT Admins;All Staff",False
+breakglassadmin,Breakglass,Admin,Breakglass Admin,Corp/Users/IT,"IT Admins",False
