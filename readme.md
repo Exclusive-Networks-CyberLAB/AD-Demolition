@@ -2,7 +2,7 @@
 
 A fully automated, configuration‑driven Active Directory lab deployment tool designed for cybersecurity training, demos, attack simulations, and PoC environments.
 
-This project lets you deploy a complete AD domain structure—OUs, users, groups, and misconfigurations—in minutes using a simple JSON + CSV configuration model.
+This project lets you deploy a complete AD domain structure—OUs, users, groups, and misconfigurations—in minutes using a simple JSON + CSV configuration model. It also adds fake endpoint and server entries on the domain controller for added realism.
 
 ---
 
