@@ -1,0 +1,137 @@
+{
+  "LabRootOuName": "CyberLAB",
+
+  "OUs": [
+    { "Path": "Corp" },
+    { "Path": "Corp/Users" },
+    { "Path": "Corp/Users/IT" },
+    { "Path": "Corp/Users/HR" },
+    { "Path": "Corp/Users/Finance" },
+    { "Path": "Corp/Users/Sales" },
+    { "Path": "Corp/Users/Interns" },
+    { "Path": "Corp/Users/Contractors" },
+    { "Path": "Corp/ServiceAccounts" },
+    { "Path": "Corp/Computers" },
+    { "Path": "Corp/Servers" },
+    { "Path": "Groups" },
+    { "Path": "Legacy" },
+    { "Path": "Staging" }
+  ],
+
+  "Groups": [
+    { "Name": "All Staff",              "Description": "All employees and contractors" },
+    { "Name": "IT Admins",              "Description": "Privileged IT administrators" },
+    { "Name": "Helpdesk Tier 1",        "Description": "Helpdesk support (Tier 1)" },
+    { "Name": "SecOps",                 "Description": "Security operations team (SOC/Blue team)" },
+    { "Name": "HR Staff",               "Description": "Human Resources users" },
+    { "Name": "Finance Staff",          "Description": "Finance department users" },
+    { "Name": "Sales Staff",            "Description": "Sales department users" },
+    { "Name": "All Contractors",        "Description": "All contractor accounts" },
+    { "Name": "Remote Access Users",    "Description": "VPN and remote access users" },
+    { "Name": "Local Admin - Workstations", "Description": "Local admin rights on workstations" },
+    { "Name": "Local Admin - Servers",  "Description": "Local admin rights on member servers" },
+    { "Name": "Service - SQL",          "Description": "SQL service account group" },
+    { "Name": "Service - Backup",       "Description": "Backup service account group" },
+    { "Name": "Service - Web",          "Description": "Web service account group" },
+    { "Name": "Service - Monitoring",   "Description": "Monitoring service account group" }
+  ],
+
+  "Profiles": {
+
+    "1": {
+      "Name": "Secure Baseline",
+      "Description": "Strong enterprise baseline with enforced password security and no deliberate misconfigurations.",
+      "PasswordPolicy": {
+        "MinLength": 16,
+        "MaxAgeDays": 60,
+        "HistoryCount": 24,
+        "ComplexityEnabled": true,
+        "LockoutThreshold": 5,
+        "LockoutDurationMinutes": 15,
+        "ResetLockoutCounterMinutes": 15
+      },
+      "MisconfigIds": []
+    },
+
+    "2": {
+      "Name": "Real-World Mess",
+      "Description": "Common real-world misconfigurations found in average customer environments.",
+      "PasswordPolicy": {
+        "MinLength": 12,
+        "MaxAgeDays": 365,
+        "HistoryCount": 12,
+        "ComplexityEnabled": true,
+        "LockoutThreshold": 0,
+        "LockoutDurationMinutes": 0,
+        "ResetLockoutCounterMinutes": 0
+      },
+      "MisconfigIds": [
+        "PwdNeverExpires_ServiceAccounts",
+        "PwdNeverExpires_SomeAdmins",
+        "Overbroad_LocalAdmin_Workstations_RemoteAccessUsers",
+        "StalePrivilegedAccount_OldAdmin",
+        "SharedAccounts_Helpdesk"
+      ]
+    },
+
+    "3": {
+      "Name": "Attack Playground",
+      "Description": "Aggressively misconfigured domain for red/blue team training and attack-path exploration.",
+      "PasswordPolicy": {
+        "MinLength": 10,
+        "MaxAgeDays": 0,
+        "HistoryCount": 0,
+        "ComplexityEnabled": true,
+        "LockoutThreshold": 0,
+        "LockoutDurationMinutes": 0,
+        "ResetLockoutCounterMinutes": 0
+      },
+      "MisconfigIds": [
+        "PwdNeverExpires_ServiceAccounts",
+        "PwdNeverExpires_SomeAdmins",
+        "Overbroad_LocalAdmin_Workstations_RemoteAccessUsers",
+        "Overbroad_LocalAdmin_Workstations_AllStaff",
+        "HelpdeskIn_DomainAdmins",
+        "ServiceAccounts_In_DomainAdmins",
+        "StalePrivilegedAccount_OldAdmin",
+        "SharedAccounts_Helpdesk"
+      ]
+    },
+
+    "4": {
+      "Name": "DC Chaos Mode",
+      "Description": "Full Attack Playground plus domain controller level and protocol misconfigurations for maximum score impact.",
+      "PasswordPolicy": {
+        "MinLength": 8,
+        "MaxAgeDays": 0,
+        "HistoryCount": 0,
+        "ComplexityEnabled": false,
+        "LockoutThreshold": 0,
+        "LockoutDurationMinutes": 0,
+        "ResetLockoutCounterMinutes": 0
+      },
+      "MisconfigIds": [
+        "PwdNeverExpires_ServiceAccounts",
+        "PwdNeverExpires_SomeAdmins",
+        "Overbroad_LocalAdmin_Workstations_RemoteAccessUsers",
+        "Overbroad_LocalAdmin_Workstations_AllStaff",
+        "HelpdeskIn_DomainAdmins",
+        "ServiceAccounts_In_DomainAdmins",
+        "StalePrivilegedAccount_OldAdmin",
+        "SharedAccounts_Helpdesk",
+
+        "DC_EnablePrintSpooler",
+        "DC_EnableSMBv1",
+        "DC_DisableSMBSigning",
+        "DC_EnableLLMNR_NetBIOS",
+        "DC_WeakenLDAPSecurity",
+        "DC_EnableLegacyNTLM",
+        "DC_DisableFirewall",
+        "DC_WeakenDefender",
+        "DC_ExposeRPCAndSMB",
+        "DC_RelaxAuditAndLogRetention",
+        "DC_WeakenSysvolACL"
+      ]
+    }
+  }
+}
