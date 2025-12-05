@@ -42,6 +42,7 @@ $Global:LabSummary = @{
     OUsCreated    = 0
     GroupsCreated = 0
     UsersCreated  = 0
+    FakeEndpointsCreated = 0
 }
   
 # ---------------------------
@@ -77,6 +78,140 @@ function Ensure-ADModule {
     }
 }
   
+function Ensure-LabFakeEndpoints {
+    param(
+        $FakeConfig,
+        [string]$RootOuName,
+        [string]$DomainDn,
+        [int]$UserCount,
+        [System.Management.Automation.PSCredential]$Credential
+    )
+
+    if (-not $FakeConfig -or -not $FakeConfig.Enabled) {
+        Write-Info "Fake endpoint generation disabled in config; skipping."
+        return
+    }
+
+    Write-Info "Creating fake AD computer objects (simulated endpoints) ..."
+
+    # Resolve target OUs
+    $workstationsOu = Ensure-LabOuPath -RelativePath "Corp/Computers" -RootOuName $RootOuName -DomainDn $DomainDn -Credential $Credential
+    $serversOu      = Ensure-LabOuPath -RelativePath "Corp/Servers"    -RootOuName $RootOuName -DomainDn $DomainDn -Credential $Credential
+
+    # Read config values with sensible defaults
+    $generatePerUser   = $false
+    if ($FakeConfig.GeneratePerUser -ne $null) {
+        [bool]::TryParse($FakeConfig.GeneratePerUser.ToString(), [ref]$generatePerUser) | Out-Null
+    }
+
+    $extraWorkstations = 0
+    if ($FakeConfig.ExtraWorkstations -ne $null) {
+        [int]::TryParse($FakeConfig.ExtraWorkstations.ToString(), [ref]$extraWorkstations) | Out-Null
+    }
+
+    $extraServers = 0
+    if ($FakeConfig.ExtraServers -ne $null) {
+        [int]::TryParse($FakeConfig.ExtraServers.ToString(), [ref]$extraServers) | Out-Null
+    }
+
+    $wsPrefix = if ($FakeConfig.WorkstationPrefix) { $FakeConfig.WorkstationPrefix } else { "WKSTN" }
+    $srvPrefix = if ($FakeConfig.ServerPrefix) { $FakeConfig.ServerPrefix } else { "SRV" }
+
+    $startNumber = 1
+    if ($FakeConfig.StartNumber -ne $null) {
+        [int]::TryParse($FakeConfig.StartNumber.ToString(), [ref]$startNumber) | Out-Null
+    }
+
+    $padLength = 4
+    if ($FakeConfig.PadLength -ne $null) {
+        [int]::TryParse($FakeConfig.PadLength.ToString(), [ref]$padLength) | Out-Null
+    }
+
+    # Work out how many to create
+    $totalWorkstations = 0
+    if ($generatePerUser -and $UserCount -gt 0) {
+        $totalWorkstations += $UserCount
+    }
+    $totalWorkstations += $extraWorkstations
+
+    $totalServers = $extraServers
+
+    if ($totalWorkstations -le 0 -and $totalServers -le 0) {
+        Write-Info "Fake endpoint configuration resolved to 0 endpoints; skipping."
+        return
+    }
+
+    Write-Info "Planned fake endpoints: $totalWorkstations workstations, $totalServers servers."
+
+    # Helper: create a single computer object if it doesn't already exist
+    function New-LabComputerIfMissing {
+        param(
+            [string]$Name,
+            [string]$OuDn,
+            [System.Management.Automation.PSCredential]$Credential
+        )
+
+        try {
+            if ($Credential) {
+                $existing = Get-ADComputer -Filter "Name -eq '$Name'" -Credential $Credential -ErrorAction SilentlyContinue
+            } else {
+                $existing = Get-ADComputer -Filter "Name -eq '$Name'" -ErrorAction SilentlyContinue
+            }
+
+            if ($existing) {
+                Write-Info "Computer already exists: $Name (skipping)"
+                return $false
+            }
+
+            # simple pseudo-random password (lab only)
+            $plainPwd = "CyberLAB-" + ([Guid]::NewGuid().ToString("N").Substring(0,8))
+            $secPwd   = ConvertTo-SecureString $plainPwd -AsPlainText -Force
+
+            $params = @{
+                Name            = $Name
+                Path            = $OuDn
+                Enabled         = $true
+                AccountPassword = $secPwd
+            }
+            if ($Credential) { $params.Credential = $Credential }
+
+            New-ADComputer @params | Out-Null
+            Write-Info "Created fake computer: $Name in $OuDn"
+            return $true
+        }
+        catch {
+            Write-WarnMsg "Failed to create fake computer $Name. $_"
+            return $false
+        }
+    }
+
+    $createdCount = 0
+    $currentNumber = $startNumber
+
+    # Create workstations
+    for ($i = 1; $i -le $totalWorkstations; $i++) {
+        $numStr = $currentNumber.ToString(("D{0}" -f $padLength))
+        $name   = "$wsPrefix-$numStr"
+        if (New-LabComputerIfMissing -Name $name -OuDn $workstationsOu -Credential $Credential) {
+            $createdCount++
+        }
+        $currentNumber++
+    }
+
+    # Create servers
+    for ($j = 1; $j -le $totalServers; $j++) {
+        $numStr = $j.ToString(("D{0}" -f $padLength))
+        $name   = "$srvPrefix-$numStr"
+        if (New-LabComputerIfMissing -Name $name -OuDn $serversOu -Credential $Credential) {
+            $createdCount++
+        }
+    }
+
+    $Global:LabSummary.FakeEndpointsCreated += $createdCount
+    Write-Info "Fake endpoint creation complete. New endpoints created this run: $createdCount"
+}
+
+
 function Get-DomainContext {
     param(
         [System.Management.Automation.PSCredential]$Credential
@@ -864,6 +999,7 @@ function Show-LabSummary {
     Write-Host "OUs created:    $($Global:LabSummary.OUsCreated)"
     Write-Host "Groups created: $($Global:LabSummary.GroupsCreated)"
     Write-Host "Users created:  $($Global:LabSummary.UsersCreated)"
+    Write-Host "Fake endpoints:  $($Global:LabSummary.FakeEndpointsCreated)"
     Write-Host ""
     Write-Host "Profile:        $($ProfileConfig.Name)"
     Write-Host "Description:    $($ProfileConfig.Description)"
@@ -972,13 +1108,17 @@ foreach ($ou in $ouList) {
 # Build groups
 Write-Info "Creating lab groups ..."
 Ensure-LabGroups -Groups $groupList -RootOuName $labRootOuName -DomainDn $domainDn -Credential $cred
-  
+
+# Fake endpoints (runs for all profiles if Enabled)
+Ensure-LabFakeEndpoints -FakeConfig $configJson.FakeEndpoints -RootOuName $labRootOuName -DomainDn $domainDn -UserCount $users.Count -Credential $cred
+
 # Build users
-$defaultPasswordPlain = "CyberLAB-is-Great!2025"
+$defaultPasswordPlain = "CyberLAB-is-great!2025"
 $defaultPassword = ConvertTo-SecureString $defaultPasswordPlain -AsPlainText -Force
-  
+
 Write-Info "Creating lab users and baseline group memberships ..."
 Ensure-LabUsers -Users $users -RootOuName $labRootOuName -DomainDn $domainDn -DnsRoot $dnsRoot -DefaultPassword $defaultPassword -Credential $cred
+
   
 # Misconfig overlay
 if ($profileConfig.MisconfigIds -and $profileConfig.MisconfigIds.Count -gt 0) {
@@ -989,6 +1129,7 @@ if ($profileConfig.MisconfigIds -and $profileConfig.MisconfigIds.Count -gt 0) {
   
 # Summary
 Show-LabSummary -LabRootOuName $labRootOuName -ProfileConfig $profileConfig
+
  
   
  
