@@ -1,4 +1,4 @@
-# CyberLAB AD Lab Builder
+# CyberLAB AD Demolition
 
 A fully automated, configuration‑driven Active Directory lab deployment tool designed for cybersecurity training, demos, attack simulations, and PoC environments.
 
