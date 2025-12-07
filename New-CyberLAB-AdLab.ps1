@@ -561,6 +561,115 @@ function Invoke-Misconfig_PwdNeverExpires_ServiceAccounts {
         }
     }
 }
+
+function Invoke-Misconfig_CS_KerberosPreauthDisabled {
+    param(
+        [System.Management.Automation.PSCredential]$Credential
+    )
+
+    $targetSam = "svc_web"
+
+    Write-WarnMsg "Disabling Kerberos pre-authentication for service account '$targetSam' (AS-REP roastable) ..."
+
+    try {
+        $params = @{
+            Identity     = $targetSam
+            ErrorAction  = 'Stop'
+        }
+        if ($Credential) { $params.Credential = $Credential }
+
+        # Confirm the account exists
+        $user = Get-ADUser @params
+
+        $setParams = @{
+            Identity               = $targetSam
+            DoesNotRequirePreAuth  = $true
+            ErrorAction            = 'SilentlyContinue'
+        }
+        if ($Credential) { $setParams.Credential = $Credential }
+
+        Set-ADAccountControl @setParams
+
+        Write-Info "Kerberos pre-authentication disabled for $targetSam."
+    }
+    catch {
+        Write-WarnMsg "Could not disable Kerberos pre-authentication for $targetSam. $_"
+    }
+}
+
+function Invoke-Misconfig_CS_WeakSPN_ServiceAccount {
+    param(
+        [System.Management.Automation.PSCredential]$Credential,
+        [string]$DomainDnsRoot
+    )
+
+    $targetSam = "svc_sql"
+
+    Write-WarnMsg "Configuring weak SPN service account '$targetSam' (Kerberoastable + weak password) ..."
+
+    try {
+        $getParams = @{
+            Identity    = $targetSam
+            ErrorAction = 'Stop'
+        }
+        if ($Credential) { $getParams.Credential = $Credential }
+
+        $user = Get-ADUser @getParams
+
+        #
+        # 1) Add an SPN so this becomes Kerberoastable
+        #
+        $sqlHost = "sql01.$DomainDnsRoot"
+        $spn     = "MSSQLSvc/$sqlHost:1433"
+
+        $setSpnParams = @{
+            Identity    = $targetSam
+            Add         = @{ ServicePrincipalNames = $spn }
+            ErrorAction = 'SilentlyContinue'
+        }
+        if ($Credential) { $setSpnParams.Credential = $Credential }
+
+        Set-ADUser @setSpnParams
+
+        #
+        # 2) Ensure password never expires (already common in your other misconfigs,
+        #    but we enforce it explicitly here).
+        #
+        $pwdNeverParams = @{
+            Identity            = $targetSam
+            PasswordNeverExpires = $true
+            ErrorAction          = 'SilentlyContinue'
+        }
+        if ($Credential) { $pwdNeverParams.Credential = $Credential }
+
+        Set-ADUser @pwdNeverParams
+
+        #
+        # 3) Set a very weak, extremely common password.
+        #    (CrowdStrike often flags these as "compromised"/weak if they appear in
+        #    breach corpuses or common-password lists.)
+        #
+        $weakPasswordPlain = "Password123!"
+        $weakPassword      = ConvertTo-SecureString $weakPasswordPlain -AsPlainText -Force
+
+        $setPwdParams = @{
+            Identity      = $targetSam
+            NewPassword   = $weakPassword
+            Reset         = $true
+            ErrorAction   = 'SilentlyContinue'
+        }
+        if ($Credential) { $setPwdParams.Credential = $Credential }
+
+        Set-ADAccountPassword @setPwdParams
+
+        Write-Info "SPN '$spn' added and weak password set for $targetSam."
+        Write-Info "This should appear as a poorly protected SPN account / compromised password in CrowdStrike."
+    }
+    catch {
+        Write-WarnMsg "Could not fully configure weak SPN service account for $targetSam. $_"
+    }
+}
+
   
 function Invoke-Misconfig_PwdNeverExpires_SomeAdmins {
     param($Credential)
@@ -903,7 +1012,8 @@ function Invoke-Misconfig_DC_WeakenSysvolACL {
 function Apply-Misconfigurations {
     param(
         $ProfileConfig,
-        [System.Management.Automation.PSCredential]$Credential
+        [System.Management.Automation.PSCredential]$Credential,
+        [string]$DomainDnsRoot
     )
   
     if (-not $ProfileConfig.MisconfigIds -or $ProfileConfig.MisconfigIds.Count -eq 0) {
@@ -974,6 +1084,14 @@ function Apply-Misconfigurations {
             "DC_WeakenSysvolACL" {
                 Invoke-Misconfig_DC_WeakenSysvolACL
             }
+            "CS_KerberosPreauthDisabled" {
+            Invoke-Misconfig_CS_KerberosPreauthDisabled -Credential $Credential
+            }
+
+            "CS_WeakSPN_ServiceAccount" {
+            Invoke-Misconfig_CS_WeakSPN_ServiceAccount -Credential $Credential -DomainDnsRoot $DomainDnsRoot
+            }
+
             default {
                 Write-WarnMsg "Unknown MisconfigId '$id' in profile; no handler implemented."
             }
@@ -1122,7 +1240,7 @@ Ensure-LabUsers -Users $users -RootOuName $labRootOuName -DomainDn $domainDn -Dn
   
 # Misconfig overlay
 if ($profileConfig.MisconfigIds -and $profileConfig.MisconfigIds.Count -gt 0) {
-    Apply-Misconfigurations -ProfileConfig $profileConfig -Credential $cred
+    Apply-Misconfigurations -ProfileConfig $profileConfig -Credential $cred -DomainDnsRoot $dnsRoot
 } else {
     Write-Info "Profile has no misconfig IDs; environment stays as secure baseline."
 }
