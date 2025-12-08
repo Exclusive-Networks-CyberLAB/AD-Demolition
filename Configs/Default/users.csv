@@ -1,53 +1,135 @@
 SamAccountName,GivenName,Surname,DisplayName,OuPath,BaselineGroups,IsServiceAccount
-# Core IT personas
-itadmin1,Alex,Admin,Alex Admin,Corp/Users/IT,"IT Admins;All Staff",False
-helpdesk1,Sam,Helpdesk,Sam Helpdesk,Corp/Users/IT,"Helpdesk Tier 1;All Staff",False
-helpdesk2,Jamie,Helpdesk,Jamie Helpdesk,Corp/Users/IT,"Helpdesk Tier 1;All Staff",False
-secops1,Casey,Secops,Casey SecOps,Corp/Users/IT,"SecOps;All Staff",False
-secops2,Riley,Secops,Riley SecOps,Corp/Users/IT,"SecOps;All Staff",False
-
-# HR
-hruser1,Hannah,HR,Hannah HR,Corp/Users/HR,"HR Staff;All Staff",False
-hruser2,Liam,HR,Liam HR,Corp/Users/HR,"HR Staff;All Staff",False
-hruser3,Sophia,HR,Sophia HR,Corp/Users/HR,"HR Staff;All Staff",False
-
-# Finance
-finuser1,Frank,Finance,Frank Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
-finuser2,Amelia,Finance,Amelia Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
-finuser3,Noah,Finance,Noah Finance,Corp/Users/Finance,"Finance Staff;All Staff",False
-
-# Sales
-salesuser01,Ella,Sales,Ella Sales,Corp/Users/Sales,"All Staff",False
-salesuser02,Jack,Sales,Jack Sales,Corp/Users/Sales,"All Staff",False
-salesuser03,Olivia,Sales,Olivia Sales,Corp/Users/Sales,"All Staff",False
-salesuser04,Henry,Sales,Henry Sales,Corp/Users/Sales,"All Staff",False
-salesuser05,Grace,Sales,Grace Sales,Corp/Users/Sales,"All Staff",False
-salesuser06,Leo,Sales,Leo Sales,Corp/Users/Sales,"All Staff",False
-salesuser07,Isla,Sales,Isla Sales,Corp/Users/Sales,"All Staff",False
-salesuser08,Max,Sales,Max Sales,Corp/Users/Sales,"All Staff",False
-salesuser09,Chloe,Sales,Chloe Sales,Corp/Users/Sales,"All Staff",False
-salesuser10,Luke,Sales,Luke Sales,Corp/Users/Sales,"All Staff",False
-
-# Interns
-intern01,Ivy,Intern,Ivy Intern,Corp/Users/Interns,"All Staff",False
-intern02,Tom,Intern,Tom Intern,Corp/Users/Interns,"All Staff",False
-intern03,Mia,Intern,Mia Intern,Corp/Users/Interns,"All Staff",False
-intern04,Ruby,Intern,Ruby Intern,Corp/Users/Interns,"All Staff",False
-intern05,Ben,Intern,Ben Intern,Corp/Users/Interns,"All Staff",False
-
-# Contractors
-contractor01,Aaron,Contractor,Aaron Contractor,Corp/Users/Contractors,"All Contractors",False
-contractor02,Emma,Contractor,Emma Contractor,Corp/Users/Contractors,"All Contractors",False
-contractor03,Daniel,Contractor,Daniel Contractor,Corp/Users/Contractors,"All Contractors",False
-contractor04,Sarah,Contractor,Sarah Contractor,Corp/Users/Contractors,"All Contractors",False
-contractor05,Oliver,Contractor,Oliver Contractor,Corp/Users/Contractors,"All Contractors",False
-
-# Service accounts
-svc_sql,SQL,Service,SQL Service Account,Corp/ServiceAccounts,"Service - SQL",True
-svc_backup,Backup,Service,Backup Service Account,Corp/ServiceAccounts,"Service - Backup",True
-svc_web,Web,Service,Web App Service Account,Corp/ServiceAccounts,"Service - Web",True
-svc_monitor,Monitor,Service,Monitoring Service Account,Corp/ServiceAccounts,"Service - Monitoring",True
-
-# Legacy / stale admin
-oldadmin,Olivia,Oldadmin,Olivia Old Admin,Legacy,"IT Admins;All Staff",False
-breakglassadmin,Breakglass,Admin,Breakglass Admin,Corp/Users/IT,"IT Admins",False
+itadmin1,Alex,Admin,Alex Admin,Corp/Users/IT,IT Admins;All Staff,False
+helpdesk1,Sam,Helpdesk,Sam Helpdesk,Corp/Users/IT,Helpdesk Tier 1;All Staff,False
+helpdesk2,Jamie,Helpdesk,Jamie Helpdesk,Corp/Users/IT,Helpdesk Tier 1;All Staff,False
+secops1,Casey,Secops,Casey SecOps,Corp/Users/IT,SecOps;All Staff,False
+secops2,Riley,Secops,Riley SecOps,Corp/Users/IT,SecOps;All Staff,False
+hruser1,Hannah,HR,Hannah HR,Corp/Users/HR,HR Staff;All Staff,False
+hruser2,Liam,HR,Liam HR,Corp/Users/HR,HR Staff;All Staff,False
+hruser3,Sophia,HR,Sophia HR,Corp/Users/HR,HR Staff;All Staff,False
+finuser1,Frank,Finance,Frank Finance,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser2,Amelia,Finance,Amelia Finance,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser3,Noah,Finance,Noah Finance,Corp/Users/Finance,Finance Staff;All Staff,False
+salesuser01,Ella,Sales,Ella Sales,Corp/Users/Sales,All Staff,False
+salesuser02,Jack,Sales,Jack Sales,Corp/Users/Sales,All Staff,False
+salesuser03,Olivia,Sales,Olivia Sales,Corp/Users/Sales,All Staff,False
+salesuser04,Henry,Sales,Henry Sales,Corp/Users/Sales,All Staff,False
+salesuser05,Grace,Sales,Grace Sales,Corp/Users/Sales,All Staff,False
+salesuser06,Leo,Sales,Leo Sales,Corp/Users/Sales,All Staff,False
+salesuser07,Isla,Sales,Isla Sales,Corp/Users/Sales,All Staff,False
+salesuser08,Max,Sales,Max Sales,Corp/Users/Sales,All Staff,False
+salesuser09,Chloe,Sales,Chloe Sales,Corp/Users/Sales,All Staff,False
+salesuser10,Luke,Sales,Luke Sales,Corp/Users/Sales,All Staff,False
+intern01,Ivy,Intern,Ivy Intern,Corp/Users/Interns,All Staff,False
+intern02,Tom,Intern,Tom Intern,Corp/Users/Interns,All Staff,False
+intern03,Mia,Intern,Mia Intern,Corp/Users/Interns,All Staff,False
+intern04,Ruby,Intern,Ruby Intern,Corp/Users/Interns,All Staff,False
+intern05,Ben,Intern,Ben Intern,Corp/Users/Interns,All Staff,False
+contractor01,Aaron,Contractor,Aaron Contractor,Corp/Users/Contractors,All Contractors,False
+contractor02,Emma,Contractor,Emma Contractor,Corp/Users/Contractors,All Contractors,False
+contractor03,Daniel,Contractor,Daniel Contractor,Corp/Users/Contractors,All Contractors,False
+contractor04,Sarah,Contractor,Sarah Contractor,Corp/Users/Contractors,All Contractors,False
+contractor05,Oliver,Contractor,Oliver Contractor,Corp/Users/Contractors,All Contractors,False
+svc_sql,SQL,Service,SQL Service Account,Corp/ServiceAccounts,Service - SQL,True
+svc_backup,Backup,Service,Backup Service Account,Corp/ServiceAccounts,Service - Backup,True
+svc_web,Web,Service,Web App Service Account,Corp/ServiceAccounts,Service - Web,True
+svc_monitor,Monitor,Service,Monitoring Service Account,Corp/ServiceAccounts,Service - Monitoring,True
+oldadmin,Olivia,Oldadmin,Olivia Old Admin,Legacy,IT Admins;All Staff,False
+breakglassadmin,Breakglass,Admin,Breakglass Admin,Corp/Users/IT,IT Admins,False
+ituser01,Liam,Smith,Liam Smith,Corp/Users/IT,All Staff;IT Admins;Local Admin - Workstations,False
+ituser02,Olivia,Brown,Olivia Brown,Corp/Users/IT,All Staff;IT Admins,False
+ituser03,Noah,Miller,Noah Miller,Corp/Users/IT,All Staff;IT Admins;Local Admin - Workstations,False
+ituser04,Emma,Martinez,Emma Martinez,Corp/Users/IT,All Staff;IT Admins,False
+ituser05,Oliver,Gonzalez,Oliver Gonzalez,Corp/Users/IT,All Staff;IT Admins;Local Admin - Workstations,False
+ituser06,Ava,Thomas,Ava Thomas,Corp/Users/IT,All Staff;IT Admins,False
+ituser07,Elijah,Jackson,Elijah Jackson,Corp/Users/IT,All Staff;IT Admins;Local Admin - Workstations,False
+ituser08,Sophia,Perez,Sophia Perez,Corp/Users/IT,All Staff;IT Admins,False
+ituser09,William,Harris,William Harris,Corp/Users/IT,All Staff;Helpdesk Tier 1;Local Admin - Workstations,False
+ituser10,Isabella,Ramirez,Isabella Ramirez,Corp/Users/IT,All Staff;Helpdesk Tier 1,False
+ituser11,James,Walker,James Walker,Corp/Users/IT,All Staff;Helpdesk Tier 1;Local Admin - Workstations,False
+ituser12,Mia,King,Mia King,Corp/Users/IT,All Staff;Helpdesk Tier 1,False
+ituser13,Benjamin,Torres,Benjamin Torres,Corp/Users/IT,All Staff;SecOps;Local Admin - Workstations,False
+ituser14,Charlotte,Flores,Charlotte Flores,Corp/Users/IT,All Staff;SecOps,False
+ituser15,Lucas,Nelson,Lucas Nelson,Corp/Users/IT,All Staff;SecOps;Local Admin - Workstations,False
+ituser16,Amelia,Rivera,Amelia Rivera,Corp/Users/IT,All Staff;SecOps,False
+ituser17,Henry,Carter,Henry Carter,Corp/Users/IT,All Staff;Local Admin - Workstations,False
+ituser18,Evelyn,Williams,Evelyn Williams,Corp/Users/IT,All Staff,False
+ituser19,Alexander,Garcia,Alexander Garcia,Corp/Users/IT,All Staff;Local Admin - Workstations,False
+ituser20,Harper,Rodriguez,Harper Rodriguez,Corp/Users/IT,All Staff,False
+hruser04,Oliver,Miller,Oliver Miller,Corp/Users/HR,HR Staff;All Staff;Local Admin - Workstations,False
+hruser05,Ava,Martinez,Ava Martinez,Corp/Users/HR,HR Staff;All Staff;Local Admin - Workstations,False
+hruser06,Elijah,Gonzalez,Elijah Gonzalez,Corp/Users/HR,HR Staff;All Staff;Local Admin - Workstations,False
+hruser07,Sophia,Thomas,Sophia Thomas,Corp/Users/HR,HR Staff;All Staff,False
+hruser08,William,Jackson,William Jackson,Corp/Users/HR,HR Staff;All Staff,False
+hruser09,Isabella,Perez,Isabella Perez,Corp/Users/HR,HR Staff;All Staff,False
+hruser10,James,Harris,James Harris,Corp/Users/HR,HR Staff;All Staff,False
+hruser11,Mia,Ramirez,Mia Ramirez,Corp/Users/HR,HR Staff;All Staff,False
+hruser12,Benjamin,Walker,Benjamin Walker,Corp/Users/HR,HR Staff;All Staff,False
+hruser13,Charlotte,King,Charlotte King,Corp/Users/HR,HR Staff;All Staff,False
+finuser04,William,Gonzalez,William Gonzalez,Corp/Users/Finance,Finance Staff;All Staff;Local Admin - Workstations,False
+finuser05,Isabella,Thomas,Isabella Thomas,Corp/Users/Finance,Finance Staff;All Staff;Local Admin - Workstations,False
+finuser06,James,Jackson,James Jackson,Corp/Users/Finance,Finance Staff;All Staff;Local Admin - Workstations,False
+finuser07,Mia,Perez,Mia Perez,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser08,Benjamin,Harris,Benjamin Harris,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser09,Charlotte,Ramirez,Charlotte Ramirez,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser10,Lucas,Walker,Lucas Walker,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser11,Amelia,King,Amelia King,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser12,Henry,Torres,Henry Torres,Corp/Users/Finance,Finance Staff;All Staff,False
+finuser13,Evelyn,Flores,Evelyn Flores,Corp/Users/Finance,Finance Staff;All Staff,False
+salesuser11,Benjamin,Jackson,Benjamin Jackson,Corp/Users/Sales,Sales Staff;All Staff;Local Admin - Workstations;Remote Access Users,False
+salesuser12,Charlotte,Perez,Charlotte Perez,Corp/Users/Sales,Sales Staff;All Staff;Local Admin - Workstations;Remote Access Users,False
+salesuser13,Lucas,Harris,Lucas Harris,Corp/Users/Sales,Sales Staff;All Staff;Local Admin - Workstations;Remote Access Users,False
+salesuser14,Amelia,Ramirez,Amelia Ramirez,Corp/Users/Sales,Sales Staff;All Staff;Local Admin - Workstations;Remote Access Users,False
+salesuser15,Henry,Walker,Henry Walker,Corp/Users/Sales,Sales Staff;All Staff;Local Admin - Workstations;Remote Access Users,False
+salesuser16,Evelyn,King,Evelyn King,Corp/Users/Sales,Sales Staff;All Staff;Remote Access Users,False
+salesuser17,Alexander,Torres,Alexander Torres,Corp/Users/Sales,Sales Staff;All Staff;Remote Access Users,False
+salesuser18,Harper,Flores,Harper Flores,Corp/Users/Sales,Sales Staff;All Staff;Remote Access Users,False
+salesuser19,Mason,Nelson,Mason Nelson,Corp/Users/Sales,Sales Staff;All Staff;Remote Access Users,False
+salesuser20,Ella,Rivera,Ella Rivera,Corp/Users/Sales,Sales Staff;All Staff;Remote Access Users,False
+salesuser21,Michael,Carter,Michael Carter,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser22,Elizabeth,Williams,Elizabeth Williams,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser23,Ethan,Garcia,Ethan Garcia,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser24,Sofia,Rodriguez,Sofia Rodriguez,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser25,Logan,Lopez,Logan Lopez,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser26,Avery,Anderson,Avery Anderson,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser27,Jackson,Moore,Jackson Moore,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser28,Scarlett,Lee,Scarlett Lee,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser29,Levi,White,Levi White,Corp/Users/Sales,Sales Staff;All Staff,False
+salesuser30,Emily,Clark,Emily Clark,Corp/Users/Sales,Sales Staff;All Staff,False
+intern06,Henry,Harris,Henry Harris,Corp/Users/Interns,All Staff;Local Admin - Workstations,False
+intern07,Evelyn,Ramirez,Evelyn Ramirez,Corp/Users/Interns,All Staff,False
+intern08,Alexander,Walker,Alexander Walker,Corp/Users/Interns,All Staff,False
+intern09,Harper,King,Harper King,Corp/Users/Interns,All Staff,False
+intern10,Mason,Torres,Mason Torres,Corp/Users/Interns,All Staff,False
+intern11,Ella,Flores,Ella Flores,Corp/Users/Interns,All Staff,False
+intern12,Michael,Nelson,Michael Nelson,Corp/Users/Interns,All Staff,False
+intern13,Elizabeth,Rivera,Elizabeth Rivera,Corp/Users/Interns,All Staff,False
+intern14,Ethan,Carter,Ethan Carter,Corp/Users/Interns,All Staff,False
+intern15,Sofia,Williams,Sofia Williams,Corp/Users/Interns,All Staff,False
+intern16,Logan,Garcia,Logan Garcia,Corp/Users/Interns,All Staff,False
+intern17,Avery,Rodriguez,Avery Rodriguez,Corp/Users/Interns,All Staff,False
+intern18,Jackson,Lopez,Jackson Lopez,Corp/Users/Interns,All Staff,False
+intern19,Scarlett,Anderson,Scarlett Anderson,Corp/Users/Interns,All Staff,False
+intern20,Levi,Moore,Levi Moore,Corp/Users/Interns,All Staff,False
+contractor06,Mason,Walker,Mason Walker,Corp/Users/Contractors,All Contractors;Remote Access Users,False
+contractor07,Ella,King,Ella King,Corp/Users/Contractors,All Contractors;Remote Access Users,False
+contractor08,Michael,Torres,Michael Torres,Corp/Users/Contractors,All Contractors;Remote Access Users,False
+contractor09,Elizabeth,Flores,Elizabeth Flores,Corp/Users/Contractors,All Contractors;Remote Access Users,False
+contractor10,Ethan,Nelson,Ethan Nelson,Corp/Users/Contractors,All Contractors,False
+contractor11,Sofia,Rivera,Sofia Rivera,Corp/Users/Contractors,All Contractors,False
+contractor12,Logan,Carter,Logan Carter,Corp/Users/Contractors,All Contractors,False
+contractor13,Avery,Williams,Avery Williams,Corp/Users/Contractors,All Contractors,False
+contractor14,Jackson,Garcia,Jackson Garcia,Corp/Users/Contractors,All Contractors,False
+contractor15,Scarlett,Rodriguez,Scarlett Rodriguez,Corp/Users/Contractors,All Contractors,False
+svc_sql02,Sophia,Smith,Sophia Smith,Corp/ServiceAccounts,Service - SQL,True
+svc_sql03,Henry,Gonzalez,Henry Gonzalez,Corp/ServiceAccounts,Service - SQL,True
+svc_sql04,Theodore,Moore,Theodore Moore,Corp/ServiceAccounts,Service - SQL,True
+svc_backup02,Sophia,Taylor,Sophia Taylor,Corp/ServiceAccounts,Service - Backup,True
+svc_backup03,Harper,King,Harper King,Corp/ServiceAccounts,Service - Backup,True
+svc_backup04,Aiden,Lewis,Aiden Lewis,Corp/ServiceAccounts,Service - Backup,True
+svc_web02,Henry,Baker,Henry Baker,Corp/ServiceAccounts,Service - Web,True
+svc_web03,Luna,Mitchell,Luna Mitchell,Corp/ServiceAccounts,Service - Web,True
+svc_web04,Harper,Campbell,Harper Campbell,Corp/ServiceAccounts,Service - Web,True
+svc_monitor02,Chloe,Mitchell,Chloe Mitchell,Corp/ServiceAccounts,Service - Monitoring,True
+svc_monitor03,Scarlett,Rivera,Scarlett Rivera,Corp/ServiceAccounts,Service - Monitoring,True
+svc_monitor04,Mason,Jackson,Mason Jackson,Corp/ServiceAccounts,Service - Monitoring,True
