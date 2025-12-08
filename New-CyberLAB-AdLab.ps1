@@ -600,16 +600,19 @@ function Invoke-Misconfig_CS_KerberosPreauthDisabled {
 function Invoke-Misconfig_CS_WeakSPN_ServiceAccount {
     param(
         [System.Management.Automation.PSCredential]$Credential,
-        [string]$DomainDnsRoot
+        [string]$DomainDnsRoot   # kept for compatibility, not used
     )
 
     $targetSam = "svc_sql"
+    $spn       = "MSSQLSvc/sql01:1433"   # simple form that we know works
 
-    Write-WarnMsg "Configuring weak SPN service account '$targetSam' (Kerberoastable + weak password) ..."
+    Write-WarnMsg "Configuring weak SPN service account '$targetSam' (<Kerberoastable + weak password>) ..."
 
     try {
+        # Get the service account, including any existing SPNs
         $getParams = @{
             Identity    = $targetSam
+            Properties  = @("ServicePrincipalNames")
             ErrorAction = 'Stop'
         }
         if ($Credential) { $getParams.Credential = $Credential }
@@ -617,26 +620,28 @@ function Invoke-Misconfig_CS_WeakSPN_ServiceAccount {
         $user = Get-ADUser @getParams
 
         #
-        # 1) Add an SPN so this becomes Kerberoastable
+        # 1) Add SPN if it is not already present
         #
-        $sqlHost = "sql01.$DomainDnsRoot"
-        $spn     = "MSSQLSvc/$sqlHost:1433"
+        if (-not $user.ServicePrincipalNames -or -not ($user.ServicePrincipalNames -contains $spn)) {
+            $setSpnParams = @{
+                Identity    = $targetSam
+                Add         = @{ ServicePrincipalNames = $spn }
+                ErrorAction = 'SilentlyContinue'
+            }
+            if ($Credential) { $setSpnParams.Credential = $Credential }
 
-        $setSpnParams = @{
-            Identity    = $targetSam
-            Add         = @{ ServicePrincipalNames = $spn }
-            ErrorAction = 'SilentlyContinue'
+            Set-ADUser @setSpnParams
+            Write-Info "SPN '$spn' added to $targetSam."
         }
-        if ($Credential) { $setSpnParams.Credential = $Credential }
-
-        Set-ADUser @setSpnParams
+        else {
+            Write-Info "SPN '$spn' already present on $targetSam (skipping add)."
+        }
 
         #
-        # 2) Ensure password never expires (already common in your other misconfigs,
-        #    but we enforce it explicitly here).
+        # 2) Ensure password never expires
         #
         $pwdNeverParams = @{
-            Identity            = $targetSam
+            Identity             = $targetSam
             PasswordNeverExpires = $true
             ErrorAction          = 'SilentlyContinue'
         }
@@ -645,30 +650,28 @@ function Invoke-Misconfig_CS_WeakSPN_ServiceAccount {
         Set-ADUser @pwdNeverParams
 
         #
-        # 3) Set a very weak, extremely common password.
-        #    (CrowdStrike often flags these as "compromised"/weak if they appear in
-        #    breach corpuses or common-password lists.)
+        # 3) Set a very weak, common password
         #
         $weakPasswordPlain = "Password123!"
         $weakPassword      = ConvertTo-SecureString $weakPasswordPlain -AsPlainText -Force
 
         $setPwdParams = @{
-            Identity      = $targetSam
-            NewPassword   = $weakPassword
-            Reset         = $true
-            ErrorAction   = 'SilentlyContinue'
+            Identity    = $targetSam
+            NewPassword = $weakPassword
+            Reset       = $true
+            ErrorAction = 'SilentlyContinue'
         }
         if ($Credential) { $setPwdParams.Credential = $Credential }
 
         Set-ADAccountPassword @setPwdParams
 
-        Write-Info "SPN '$spn' added and weak password set for $targetSam."
-        Write-Info "This should appear as a poorly protected SPN account / compromised password in CrowdStrike."
+        Write-Info "Weak SPN service account '$targetSam' configured (SPN + weak password + non-expiring)."
     }
     catch {
         Write-WarnMsg "Could not fully configure weak SPN service account for $targetSam. $_"
     }
 }
+
 
   
 function Invoke-Misconfig_PwdNeverExpires_SomeAdmins {
