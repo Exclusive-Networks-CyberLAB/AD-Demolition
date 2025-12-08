@@ -94,9 +94,7 @@
         "HelpdeskIn_DomainAdmins",
         "ServiceAccounts_In_DomainAdmins",
         "StalePrivilegedAccount_OldAdmin",
-        "SharedAccounts_Helpdesk",
-        "CS_KerberosPreauthDisabled",
-        "CS_WeakSPN_ServiceAccount"
+        "SharedAccounts_Helpdesk"
       ]
     },
 
@@ -132,10 +130,7 @@
         "DC_WeakenDefender",
         "DC_ExposeRPCAndSMB",
         "DC_RelaxAuditAndLogRetention",
-        "DC_WeakenSysvolACL",
-
-        "CS_KerberosPreauthDisabled",
-        "CS_WeakSPN_ServiceAccount"
+        "DC_WeakenSysvolACL"
       ]
     }
   },
