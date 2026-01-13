@@ -1,0 +1,14 @@
+{
+  "display_name": "AD-Demolition",
+  "description": "Runs the local AD-Demolition from cloned repo.",
+  "interactive": true,
+  "entry": [
+    "powershell",
+    "-NoLogo",
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "New-CyberLAB-AdLab.ps1"
+  ]
+}
