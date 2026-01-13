@@ -10,5 +10,9 @@
     "Bypass",
     "-File",
     "New-CyberLAB-AdLab.ps1"
+  ],
+  "prerequisites": [
+    "RSAT ActiveDirectory PowerShell module (Install-WindowsFeature RSAT-AD-PowerShell on Windows Server)",
+    "Must be domain-joined OR have access to a DC (depends on script mode)"
   ]
 }
