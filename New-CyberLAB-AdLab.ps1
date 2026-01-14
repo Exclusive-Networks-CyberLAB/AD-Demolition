@@ -69,13 +69,13 @@ function Write-ErrorMsg {
 # ---------------------------
   
 function Ensure-ADModule {
-    try {
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
         Import-Module ActiveDirectory -ErrorAction Stop
+        return $true
     }
-    catch {
-        Write-ErrorMsg "Failed to import ActiveDirectory module. Install RSAT / AD tools and try again."
-        throw
-    }
+
+    Write-ErrorMsg "ActiveDirectory module not found. Install RSAT 'Active Directory Domain Services and LDS Tools' (Windows 10/11) or add feature 'RSAT-AD-PowerShell' (Windows Server), then re-run."
+    return $false
 }
   
 function Ensure-LabFakeEndpoints {
@@ -1137,7 +1137,7 @@ Write-Host "CyberLAB AD Lab Builder (config-driven, Profiles 1-4)" -ForegroundCo
 Write-Host "WARNING: For lab/demo environments only. Do NOT run in production." -ForegroundColor Yellow
 Write-Host ""
   
-Ensure-ADModule
+if (-not (Ensure-ADModule)) { exit 1 }
   
 # Load config files
 $adConfigPath = Join-Path $ConfigPath "ad-config.json"
